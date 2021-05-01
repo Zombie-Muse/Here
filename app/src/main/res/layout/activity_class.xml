@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClassActivity"
+    android:background="@color/blue">
+
+    <include
+        android:id="@+id/toolbar_class"
+        layout="@layout/toolbar" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/magenta"
+        android:src="@drawable/ic_add" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/toolbar_class"
+        android:id="@+id/rv_class_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_add_class_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a class"
+        android:textSize="18sp"
+        android:textColor="@color/bright_yellow_green"
+        android:layout_centerInParent="true"
+        android:visibility="visible"/>
+</RelativeLayout>
