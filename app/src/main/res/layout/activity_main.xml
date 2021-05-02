@@ -53,5 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="30sp"
         android:layout_gravity="center"
-        android:text="" />
+        android:text="greeting"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textColor="@color/gold"/>
 </LinearLayout>

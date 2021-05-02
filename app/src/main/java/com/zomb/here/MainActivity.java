@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showStudents() {
-//        Intent intent = new Intent(this, StudentActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, StudentActivity.class);
+        startActivity(intent);
     }
 
     private void showReports() {
