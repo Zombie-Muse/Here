@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Here</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="instruction_class">Add a class to begin</string>
+    <string name="update">Update</string>
+    <string name="add_class">Add Class</string>
+    <string name="update_class">Update Class</string>
+    <string name="add_student">Add Student</string>
+    <string name="instruction_student">Add a student</string>
+    <string name="student_hint">Student Name</string>
+    <string name="class_hint">Class Name</string>
 </resources>

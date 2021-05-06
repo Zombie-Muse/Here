@@ -32,7 +32,7 @@
         android:id="@+id/tv_add_class_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add a class"
+        android:text="@string/instruction_class"
         android:textSize="18sp"
         android:textColor="@color/bright_yellow_green"
         android:layout_centerInParent="true"
