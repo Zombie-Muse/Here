@@ -1,12 +1,18 @@
 package com.zomb.here;
 
 import android.app.Dialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +24,15 @@ public class MyDialog extends DialogFragment {
     public static final String CLASS_UPDATE_DIALOG = "updateClass";
     public static final String STUDENT_ADD_DIALOG = "addStudent";
     public static final String STUDENT_UPDATE_DIALOG = "updateStudent";
+    public static final String STATUS_ADD_DIALOG = "addStatus";
+    public static final String STATUS_UPDATE_DIALOG = "updateStatus";
 
     private int size = 0;
+    RadioButton status;
     OnClickListener listener;
+    TextView title;
+    Button add, cancel;
+
     public interface OnClickListener {
         void onClick(String text);
     }
@@ -45,8 +57,53 @@ public class MyDialog extends DialogFragment {
         if (getTag().equals(STUDENT_UPDATE_DIALOG)) {
             dialog = getUpdateStudentDialog();
         }
+        if (getTag().equals(STATUS_ADD_DIALOG)) {
+            dialog = getAddStatusDialog();
+        }
+        if (getTag().equals(STATUS_UPDATE_DIALOG)) {
+            dialog = getUpdateStatusDialog();
+        }
 
         return dialog;
+    }
+    //todo: add updateStatus dialog
+    private Dialog getUpdateStatusDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
+        builder.setView(view);
+
+        title = view.findViewById(R.id.titleDialog);
+        title.setText(R.string.update_student);
+        EditText edt_student = view.findViewById(R.id.edt01);
+        edt_student.setHint(R.string.student_hint);
+        EditText edt_02 = view.findViewById(R.id.edt02);
+        edt_02.setVisibility(View.GONE);
+        add = view.findViewById(R.id.btn_add);
+        cancel = view.findViewById(R.id.btn_cancel);
+
+        Spinner spinner = view.findViewById(R.id.sp_classes);
+        RadioGroup radioGroup = view.findViewById(R.id.radiogroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                onRadioButtonClicked(checkedId);
+                status = view.findViewById(checkedId);
+
+            }
+            });
+        cancel.setOnClickListener(v -> dismiss());
+        add.setText(R.string.update);
+        add.setOnClickListener(v -> {
+            String studentName = edt_student.getText().toString();
+            listener.onClick(studentName);
+            dismiss();
+        });
+        return builder.create();
+    }
+
+    //todo: add addStatus dialog
+    private Dialog getAddStatusDialog() {
+        return null;
     }
 
     private Dialog getUpdateStudentDialog() {
@@ -54,7 +111,7 @@ public class MyDialog extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
         builder.setView(view);
 
-        TextView title = view.findViewById(R.id.titleDialog);
+        title = view.findViewById(R.id.titleDialog);
         title.setText(R.string.update_class);
         EditText edt_class = view.findViewById(R.id.edt01);
         edt_class.setHint("Class Name");
@@ -62,10 +119,28 @@ public class MyDialog extends DialogFragment {
         edt_02.setText("");
         edt_02.setVisibility(View.GONE);
 
-        Button add = view.findViewById(R.id.btn_add_class);
-        Button cancel = view.findViewById(R.id.btn_cancel);
+
+        Spinner spinner = view.findViewById(R.id.sp_classes);
+//        CursorAdapter<>
+//        spinner.setOnItemSelectedListener(this);
+
+        add = view.findViewById(R.id.btn_add);
+        cancel = view.findViewById(R.id.btn_cancel);
+        RadioGroup radioGroup;
+        radioGroup = view.findViewById(R.id.radiogroup);
+        radioGroup.setVisibility(view.GONE);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                onRadioButtonClicked(checkedId);
+                status = view.findViewById(checkedId);
+
+            }
+        });
 
         cancel.setOnClickListener(v -> dismiss());
+        add.setText(R.string.update);
         add.setOnClickListener(v -> {
             String className = edt_class.getText().toString();
             listener.onClick(className);
@@ -81,7 +156,7 @@ public class MyDialog extends DialogFragment {
         builder.setView(view);
 
         // todo: double check all editText fields for required database data
-        TextView title = view.findViewById(R.id.titleDialog);
+        title = view.findViewById(R.id.titleDialog);
         title.setText(R.string.add_student);
         EditText edt_class = view.findViewById(R.id.edt01);
         edt_class.setHint(R.string.student_hint);
@@ -89,9 +164,8 @@ public class MyDialog extends DialogFragment {
         edt_02.setText("");
         edt_02.setVisibility(View.GONE);
 
-        Button add = view.findViewById(R.id.btn_add_student);
-        add.setText(R.string.update);
-        Button cancel = view.findViewById(R.id.btn_cancel);
+        add = view.findViewById(R.id.btn_add);
+        cancel = view.findViewById(R.id.btn_cancel);
 
         cancel.setOnClickListener(v -> dismiss());
         add.setOnClickListener(v -> {
@@ -109,7 +183,7 @@ public class MyDialog extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
         builder.setView(view);
 
-        TextView title = view.findViewById(R.id.titleDialog);
+        title = view.findViewById(R.id.titleDialog);
         title.setText(R.string.update_class);
         EditText edt_class = view.findViewById(R.id.edt01);
         edt_class.setHint(R.string.class_hint);
@@ -117,8 +191,9 @@ public class MyDialog extends DialogFragment {
         edt_02.setText("");
         edt_02.setVisibility(View.GONE);
 
-        Button add = view.findViewById(R.id.btn_add_class);
-        Button cancel = view.findViewById(R.id.btn_cancel);
+        add = view.findViewById(R.id.btn_add);
+        add.setText("Update");
+        cancel = view.findViewById(R.id.btn_cancel);
 
         cancel.setOnClickListener(v -> dismiss());
         add.setOnClickListener(v -> {
@@ -136,7 +211,7 @@ public class MyDialog extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
         builder.setView(view);
 
-        TextView title = view.findViewById(R.id.titleDialog);
+        title = view.findViewById(R.id.titleDialog);
         title.setText(R.string.add_class);
         EditText edt_class = view.findViewById(R.id.edt01);
         edt_class.setHint("Class Name");
@@ -144,9 +219,8 @@ public class MyDialog extends DialogFragment {
         edt_02.setText("");
         edt_02.setVisibility(View.GONE);
 
-        Button add = view.findViewById(R.id.btn_add_class);
-        add.setText(R.string.update);
-        Button cancel = view.findViewById(R.id.btn_cancel);
+        add = view.findViewById(R.id.btn_add);
+        cancel = view.findViewById(R.id.btn_cancel);
 
         cancel.setOnClickListener(v -> dismiss());
         add.setOnClickListener(v -> {
@@ -156,5 +230,25 @@ public class MyDialog extends DialogFragment {
         });
 
         return builder.create();
+    }
+
+    public void onRadioButtonClicked(int checkedId) {
+
+        switch(checkedId) {
+            case R.id.present:
+                    Toast.makeText(getContext(), "Student is present", Toast.LENGTH_SHORT).show();
+                    // todo: implement adding to attendance table
+                break;
+            case R.id.absent:
+
+                    Toast.makeText(getContext(), "Student is absent", Toast.LENGTH_SHORT).show();
+                    // todo: implement adding to attendance table
+                break;
+            case R.id.tardy:
+
+                    Toast.makeText(getContext(), "Student is tardy", Toast.LENGTH_SHORT).show();
+                    // todo: implement adding to attendance database
+                break;
+        }
     }
 }

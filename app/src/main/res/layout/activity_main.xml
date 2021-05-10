@@ -19,7 +19,7 @@
         android:layout_gravity="center"
         android:textColor="@color/blue"
         android:background="@drawable/main_menu_btn"
-        android:text="Classes"
+        android:text="@string/classes"
         android:textSize="30sp"
         android:layout_margin="15dp"
         />
@@ -31,7 +31,7 @@
         android:layout_gravity="center"
         android:textColor="@color/blue"
         android:background="@drawable/main_menu_btn"
-        android:text="Students"
+        android:text="@string/students"
         android:textSize="30sp"
         android:layout_margin="15dp"
         />
@@ -42,7 +42,7 @@
         android:layout_gravity="center"
         android:textColor="@color/blue"
         android:background="@drawable/main_menu_btn"
-        android:text="Reports"
+        android:text="@string/reports"
         android:textSize="30sp"
         android:layout_margin="15dp"
         />
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="30sp"
         android:layout_gravity="center"
-        android:text="greeting"
+        android:text="@string/greeting"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textColor="@color/gold"/>

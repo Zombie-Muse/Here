@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String user = "Christy";
-    TextView greeting;
-    AppCompatButton classes;
-    AppCompatButton students;
-    AppCompatButton reports;
+    private String user = "Human Teacher";
+    private TextView greeting;
+    private TextView date;
+    private AppCompatButton classes;
+    private AppCompatButton students;
+    private AppCompatButton reports;
+    private MyCalendar calendar;
     Toolbar toolbar;
 
     @Override
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         greeting = findViewById(R.id.tv_greeting);
         greeting.setText("Greetings, " + user + "!");
+        calendar = new MyCalendar();
 
         classes = findViewById(R.id.btn_classes);
         classes.setOnClickListener(v -> showClasses());
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         reports = findViewById(R.id.btn_reports);
         reports.setOnClickListener(v -> showReports());
         setToolbar();
+        date = toolbar.findViewById(R.id.toolbar_date);
         setSupportActionBar(toolbar);
 
     }
@@ -43,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
     private void setToolbar() {
         toolbar = findViewById(R.id.toolbar_main);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
+        date = toolbar.findViewById(R.id.toolbar_date);
         ImageButton back = toolbar.findViewById(R.id.btn_back);
-        ImageButton save = toolbar.findViewById(R.id.btn_save);
+        ImageButton calendarBtn = toolbar.findViewById(R.id.btn_calendar);
 
-        title.setText("Here!");
+        title.setText(R.string.app_title);
+        date.setText(calendar.getDate());
         back.setVisibility(View.INVISIBLE);
-        save.setVisibility(View.INVISIBLE);
+        calendarBtn.setVisibility(View.INVISIBLE);
     }
 
     private void showClasses() {

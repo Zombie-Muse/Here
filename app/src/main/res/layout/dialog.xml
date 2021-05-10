@@ -9,7 +9,7 @@
         android:padding="30dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/titleDialog"
@@ -25,12 +25,6 @@
             android:layout_height="1dp"
             android:layout_margin="5dp"
             android:background="@color/black" />
-        <TextView
-            android:id="@+id/tv_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:layout_margin="5dp" />
 
         <EditText
             android:id="@+id/edt01"
@@ -46,27 +40,108 @@
             android:singleLine="true"
             android:hint="edt02"
             android:layout_margin="5dp" />
+
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Class: " />
+
+            <Spinner
+                android:id="@+id/sp_classes"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:layout_margin="10dp"/>
+        </RelativeLayout>
+<!--        <LinearLayout-->
+<!--            android:id="@+id/button_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Present"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_weight="1"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Absent"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_weight="1"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Tardy"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_weight="1"/>-->
+<!--        </LinearLayout>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioGroup
+                android:id="@+id/radiogroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/present"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="Present" />
+                <RadioButton
+                    android:id="@+id/absent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="Absent" />
+                <RadioButton
+                    android:id="@+id/tardy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="Tardy" />
+            </RadioGroup>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/btn_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_marginStart="40dp"
                 android:backgroundTint="@color/blue"
                 android:text="@string/add" />
 
             <Button
                 android:id="@+id/btn_cancel"
-                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_marginEnd="40dp"
                 android:backgroundTint="@color/blue"
                 android:text="@string/cancel" />
 
         </RelativeLayout>
     </LinearLayout>
+
 </LinearLayout>

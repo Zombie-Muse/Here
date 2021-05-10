@@ -10,4 +10,15 @@
     <string name="instruction_student">Add a student</string>
     <string name="student_hint">Student Name</string>
     <string name="class_hint">Class Name</string>
+    <string name="your_classes">Your Classes</string>
+    <string name="app_title">Here!</string>
+    <string name="greeting">greeting</string>
+    <string name="reports">Reports</string>
+    <string name="students">Students</string>
+    <string name="classes">Classes</string>
+    <string name="title">Title</string>
+    <string name="your_students">Your Students</string>
+    <string name="update_student">Update Student</string>
+
+
 </resources>

@@ -33,19 +33,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="Title"
+                    android:text="@string/title"
                     android:textSize="20sp"
                     android:textColor="@color/gold"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/toolbar_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textAlignment="center"
+                    android:text="date"
+                    android:textSize="16sp"
+                    android:textColor="@color/gold"
+                    android:textStyle="italic" />
+
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/btn_save"
+                android:id="@+id/btn_calendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_save"
+                android:src="@drawable/ic_baseline_calendar"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true" />
         </RelativeLayout>
