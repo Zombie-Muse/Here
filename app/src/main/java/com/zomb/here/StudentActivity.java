@@ -50,7 +50,7 @@ public class StudentActivity extends AppCompatActivity {
         studentList.setLayoutManager(layoutManager);
         studentAdapter = new StudentAdapter(this, studentItems);
         studentList.setAdapter(studentAdapter);
-        studentAdapter.setOnItemClickListener(position -> gotoItemActivity(position));
+        studentAdapter.setOnItemClickListener(position -> showAttendanceDialog()); //gotoItemActivity(position) replaced by showAttendanceDialog()...hopefully that will work
         setToolbar();
         date = toolbar.findViewById(R.id.toolbar_date);
     }
@@ -81,6 +81,29 @@ public class StudentActivity extends AppCompatActivity {
         date.setText(calendar.getDate());
 
     }
+
+    private void loadData() {
+        Cursor cursor = dbHelper.getStudentTable();
+        studentItems.clear();
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(DbHelper.STUDENT_ID));
+            String studentName = cursor.getString(cursor.getColumnIndex(DbHelper.STUDENT_NAME_KEY));
+            studentItems.add(new StudentItem(id, studentName));
+            if (!studentItems.isEmpty()) {
+                greeting.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void showAttendanceDialog() {
+        MyDialog dialog = new MyDialog();
+        dialog.show(getSupportFragmentManager(), MyDialog.STATUS_ADD_DIALOG);
+        dialog.setListener((studentStatus) -> addAttendance(studentStatus));
+    }
+
+    private void addAttendance(String studentStatus) {
+    }
+
     private void gotoItemActivity(int position) {
         Intent intent = new Intent(this, AttendanceActivity.class);
         intent.putExtra("studentName", studentItems.get(position).getStudentName());
@@ -103,18 +126,6 @@ public class StudentActivity extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
-    private void loadData() {
-        Cursor cursor = dbHelper.getStudentTable();
-        studentItems.clear();
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(DbHelper.STUDENT_ID));
-            String studentName = cursor.getString(cursor.getColumnIndex(DbHelper.STUDENT_NAME_KEY));
-            studentItems.add(new StudentItem(id, studentName));
-            if (!studentItems.isEmpty()) {
-                greeting.setVisibility(View.GONE);
-            }
-        }
-    }
 
     private void showAddDialog() {
         MyDialog dialog = new MyDialog();

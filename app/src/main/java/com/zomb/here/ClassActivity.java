@@ -53,6 +53,33 @@ public class ClassActivity extends AppCompatActivity {
         date = toolbar.findViewById(R.id.toolbar_date);
     }
 
+    private void setToolbar() {
+        toolbar = findViewById(R.id.toolbar_class);
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        date = toolbar.findViewById(R.id.toolbar_date);
+        ImageButton back = toolbar.findViewById(R.id.btn_back);
+        ImageButton calendarBtn = toolbar.findViewById(R.id.btn_calendar);
+
+        title.setText(R.string.your_classes);
+        date.setText(calendar.getDate());
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(v -> onBackPressed());
+        calendarBtn.setVisibility(View.VISIBLE);
+        calendarBtn.setOnClickListener(v -> showCalendar());
+
+    }
+
+    private void showCalendar() {
+        MyCalendar calendar = new MyCalendar();
+        calendar.show(getSupportFragmentManager(), "");
+        calendar.setOnCalendarClickListener(this::onCalendarClicked);
+    }
+
+    private void onCalendarClicked(int year, int month, int day) {
+        calendar.setDate(year, month, day);
+        date.setText(calendar.getDate());
+    }
+
     private void loadData() {
         Cursor cursor = dbHelper.getClassTable();
         classItems.clear();
@@ -80,20 +107,6 @@ public class ClassActivity extends AppCompatActivity {
         classAdapter.notifyDataSetChanged();
     }
 
-    private void setToolbar() {
-        toolbar = findViewById(R.id.toolbar_class);
-        TextView title = toolbar.findViewById(R.id.toolbar_title);
-        date = toolbar.findViewById(R.id.toolbar_date);
-        ImageButton back = toolbar.findViewById(R.id.btn_back);
-        ImageButton calendarBtn = toolbar.findViewById(R.id.btn_calendar);
-
-        title.setText(R.string.your_classes);
-        date.setText(calendar.getDate());
-        back.setVisibility(View.VISIBLE);
-        calendarBtn.setVisibility(View.VISIBLE);
-
-        back.setOnClickListener(v -> onBackPressed());
-    }
 
     private void gotoItemActivity(int position) {
         Intent intent = new Intent(this, StudentActivity.class);
