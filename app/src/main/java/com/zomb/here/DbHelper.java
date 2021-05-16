@@ -118,20 +118,20 @@ public class DbHelper extends SQLiteOpenHelper {
        }
     }
 
-    public long addClass(String className) {
+    public long addCourse(String courseName) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COURSE_NAME_KEY, className);
+        values.put(COURSE_NAME_KEY, courseName);
 
         return database.insert(COURSE_TABLE_NAME, null, values);
     }
 
-    public Cursor getClassTable() {
+    public Cursor getCourseTable() {
        SQLiteDatabase database = this.getReadableDatabase();
        return database.rawQuery(SELECT_COURSE_TABLE, null);
     }
 
-    public long updateClass(int classId, String className) {
+    public long updateCourse(int classId, String className) {
        SQLiteDatabase database = this.getWritableDatabase();
        ContentValues values = new ContentValues();
        values.put(COURSE_NAME_KEY, className);
@@ -139,9 +139,9 @@ public class DbHelper extends SQLiteOpenHelper {
        return database.update(COURSE_TABLE_NAME, values, COURSE_ID + "=?", new String[]{String.valueOf(classId)});
     }
 
-    public long deleteClass(int classId) {
+    public long deleteCourse(int courseId) {
         SQLiteDatabase database = this.getReadableDatabase();
-        return database.delete(COURSE_TABLE_NAME, COURSE_ID + "=?", new String[]{String.valueOf(classId)});
+        return database.delete(COURSE_TABLE_NAME, COURSE_ID + "=?", new String[]{String.valueOf(courseId)});
     }
 
     public long addStudent(String studentName) {
@@ -168,6 +168,15 @@ public class DbHelper extends SQLiteOpenHelper {
     public long deleteStudent(int studentId) {
         SQLiteDatabase database = this.getReadableDatabase();
         return database.delete(STUDENT_TABLE_NAME, STUDENT_ID + "=?", new String[]{String.valueOf(studentId)});
+    }
+
+    public long addCourseStudent(String studentName, String courseName) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(STUDENT_NAME_KEY, studentName);
+        values.put(COURSE_NAME_KEY, courseName);
+
+        return database.insert(STUDENT_COURSES_TABLE_NAME, null, values);
     }
 
     public long addAttendance(int studentId, String date, String status) {

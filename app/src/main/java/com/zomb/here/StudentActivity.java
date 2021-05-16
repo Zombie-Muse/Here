@@ -29,18 +29,18 @@ public class StudentActivity extends AppCompatActivity {
     private StudentAdapter studentAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<StudentItem> studentItems = new ArrayList<>();
-    private ArrayList<CourseItem> courseItems = new ArrayList<>();
     private DbHelper dbHelper;
     private MyCalendar calendar;
     private String courseName;
-    private int mCourseStudent;
+    private boolean isClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
         // intended to load class name from the classActivity
-        Intent intent = getIntent();
+        courseName = getIntent().getStringExtra("className");
+        isClass = getIntent().getBooleanExtra("isClass", false);
 
 
         greeting = findViewById(R.id.tv_add_student_text);
@@ -60,13 +60,6 @@ public class StudentActivity extends AppCompatActivity {
         date = toolbar.findViewById(R.id.toolbar_date);
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COURSE) {
-            int courseId = data.getIntExtra(CourseActivity.courseName, "Course");
-            mCourseStudent = dbHelper.getClass().toString();
-        }
-    }
 
     private void setToolbar() {
         toolbar = findViewById(R.id.toolbar_student);
@@ -74,11 +67,11 @@ public class StudentActivity extends AppCompatActivity {
         date = toolbar.findViewById(R.id.toolbar_date);
         ImageButton back = toolbar.findViewById(R.id.btn_back);
         ImageButton calendarBtn = toolbar.findViewById(R.id.btn_calendar);
-        if (mCourseStudent != null) { //checks for a class name
-            title.setText(courseName);
+        if (isClass == false) { //checks for a class name
+            title.setText(R.string.your_students);
         }
 
-        title.setText(R.string.your_students);
+        title.setText(courseName);
         date.setText(calendar.getDate());
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(v -> onBackPressed());
@@ -111,10 +104,25 @@ public class StudentActivity extends AppCompatActivity {
         }
     }
 
+    private void loadCourseStudent() {
+        Cursor cursor = dbHelper.getStudentTable();
+        studentItems.clear();
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(DbHelper.STUDENT_ID));
+            String studentName = cursor.getString(cursor.getColumnIndex(DbHelper.STUDENT_NAME_KEY));
+            studentItems.add(new StudentItem(id, studentName));
+        }
+    }
+
     private void showAttendanceDialog() {
         MyDialog dialog = new MyDialog();
         dialog.show(getSupportFragmentManager(), MyDialog.STATUS_ADD_DIALOG);
         dialog.setListener((studentStatus) -> addAttendance(studentStatus));
+    }
+
+    private void showStudentCourseDialog() {
+        MyDialog dialog = new MyDialog();
+        dialog.show(getSupportFragmentManager(), MyDialog.)
     }
 
     private void addAttendance(String studentStatus) {
@@ -124,7 +132,7 @@ public class StudentActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AttendanceActivity.class);
         intent.putExtra("studentName", studentItems.get(position).getStudentName());
         intent.putExtra("position", position);
-//        intent.putExtra("className", courseItems.get(position).getclassName());
+//        intent.putExtra("className", courseItems.get(position).getClassName());
 //        intent.putExtra("classPosition", position);
         startActivity(intent);
     }
@@ -151,6 +159,7 @@ public class StudentActivity extends AppCompatActivity {
 
     private void addStudent(String studentName) {
         int studentId = (int) dbHelper.addStudent(studentName);
+        int courseId = (int) dbHelper.addStudent(courseName);
         StudentItem studentItem = new StudentItem(studentId, studentName);
         studentItems.add(studentItem);
         studentAdapter.notifyDataSetChanged();

@@ -81,7 +81,7 @@ public class CourseActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        Cursor cursor = dbHelper.getClassTable();
+        Cursor cursor = dbHelper.getCourseTable();
         courseItems.clear();
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(DbHelper.COURSE_ID));
@@ -97,11 +97,11 @@ public class CourseActivity extends AppCompatActivity {
     private void showAddDialog() {
         MyDialog dialog = new MyDialog();
         dialog.show(getSupportFragmentManager(), MyDialog.COURSE_ADD_DIALOG);
-        dialog.setListener((className) -> addCourse(courseName));
+        dialog.setListener((courseName) -> addCourse(courseName));
     }
 
     private void addCourse(String courseName) {
-        int classId = (int) dbHelper.addClass(courseName);
+        int classId = (int) dbHelper.addCourse(courseName);
         CourseItem courseItem = new CourseItem(classId, courseName);
         courseItems.add(courseItem);
         courseAdapter.notifyDataSetChanged();
@@ -110,9 +110,9 @@ public class CourseActivity extends AppCompatActivity {
 
     private void gotoItemActivity(int position) {
         Intent intent = new Intent(this, StudentActivity.class);
-        intent.putExtra("className", courseItems.get(position).getClassName());
+        intent.putExtra("className", courseItems.get(position).getCourseName());
         intent.putExtra("position", position);
-        setResult(RESULT_OK, intent);
+        intent.putExtra("isClass", true);
         startActivity(intent);
     }
 
@@ -132,11 +132,11 @@ public class CourseActivity extends AppCompatActivity {
     private void showUpdateDialog(int position) {
         MyDialog dialog = new MyDialog();
         dialog.show(getSupportFragmentManager(), MyDialog.COURSE_UPDATE_DIALOG);
-        dialog.setListener((className) -> updateClass(position, courseName));
+        dialog.setListener((courseName) -> updateCourse(position, courseName));
     }
 
     private void updateCourse(int position, String courseName) {
-        dbHelper.updateClass(courseItems.get(position).getCourseId(), courseName);
+        dbHelper.updateCourse(courseItems.get(position).getCourseId(), courseName);
         courseItems.get(position).setCourseName(courseName);
         courseAdapter.notifyItemChanged(position);
     }

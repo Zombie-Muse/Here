@@ -26,6 +26,7 @@ public class MyDialog extends DialogFragment {
     public static final String STUDENT_UPDATE_DIALOG = "updateStudent";
     public static final String STATUS_ADD_DIALOG = "addStatus";
     public static final String STATUS_UPDATE_DIALOG = "updateStatus";
+    public static final String COURSE_STUDENT_DIALOG = "addCourseStudent";
 
     private int size = 0;
     RadioButton status;
@@ -66,9 +67,40 @@ public class MyDialog extends DialogFragment {
         if (getTag().equals(STATUS_UPDATE_DIALOG)) {
             dialog = getUpdateStatusDialog();
         }
+        if (getTag().equals(COURSE_STUDENT_DIALOG)) {
+            dialog = getAddCourseStudentDialog();
+        }
 
         return dialog;
     }
+
+    private Dialog getAddCourseStudentDialog() {
+       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+       View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
+       builder.setView(view);
+
+       title = view.findViewById(R.id.titleDialog);
+       title.setText(studentName);
+       EditText edt_student = view.findViewById(R.id.edt01);
+       edt_student.setHint(studentName);
+       EditText edt_course = view.findViewById(R.id.edt02);
+       edt_course.setHint(courseName);
+       add = view.findViewById(R.id.btn_add);
+       cancel = view.findViewById(R.id.btn_cancel);
+
+       Spinner spinner = view.findViewById(R.id.sp_courses);
+
+       cancel.setOnClickListener(v -> dismiss());
+       add.setText(R.string.update);
+       add.setOnClickListener(v -> {
+           String studentName = edt_student.getText().toString();
+           String courseName = edt_course.getText().toString();
+           listener.onClick(studentName);
+           dismiss();
+       });
+       return builder.create();
+    }
+
     //todo: add updateStatus dialog
     private Dialog getUpdateStatusDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -85,6 +117,7 @@ public class MyDialog extends DialogFragment {
         cancel = view.findViewById(R.id.btn_cancel);
 
         Spinner spinner = view.findViewById(R.id.sp_courses);
+        loadSpinnerData();
         RadioGroup radioGroup = view.findViewById(R.id.radiogroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -102,6 +135,10 @@ public class MyDialog extends DialogFragment {
             dismiss();
         });
         return builder.create();
+    }
+
+    private void loadSpinnerData() {
+
     }
 
     //todo: add addStatus dialog
@@ -146,8 +183,8 @@ public class MyDialog extends DialogFragment {
 
         title = view.findViewById(R.id.titleDialog);
         title.setText(R.string.update_student);
-        EditText edt_class = view.findViewById(R.id.edt01);
-        edt_class.setHint("Class Name");
+        EditText edt_course = view.findViewById(R.id.edt01);
+        edt_course.setHint("Class Name");
         EditText edt_02 = view.findViewById(R.id.edt02);
         edt_02.setText("");
         edt_02.setVisibility(View.GONE);
@@ -191,8 +228,8 @@ public class MyDialog extends DialogFragment {
         // todo: double check all editText fields for required database data
         title = view.findViewById(R.id.titleDialog);
         title.setText(R.string.add_student);
-        EditText edt_class = view.findViewById(R.id.edt01);
-        edt_class.setHint(R.string.student_hint);
+        EditText edt_course = view.findViewById(R.id.edt01);
+        edt_course.setHint(R.string.student_hint);
         EditText edt_02 = view.findViewById(R.id.edt02);
         edt_02.setText("");
         edt_02.setVisibility(View.GONE);
@@ -204,7 +241,7 @@ public class MyDialog extends DialogFragment {
 
         cancel.setOnClickListener(v -> dismiss());
         add.setOnClickListener(v -> {
-            String className = edt_class.getText().toString();
+            String className = edt_course.getText().toString();
             listener.onClick(className);
             dismiss();
         });
@@ -278,6 +315,7 @@ public class MyDialog extends DialogFragment {
     }
 
     public void onRadioButtonClicked(int checkedId) {
+
 
         switch(checkedId) {
             case R.id.present:

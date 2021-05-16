@@ -4,37 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CourseActivity"
+    tools:context=".StudentActivity"
     android:background="@color/blue">
 
     <include
-        android:id="@+id/toolbar_course"
+        android:id="@+id/toolbar_attendance"
         layout="@layout/toolbar" />
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add_class"
+        android:id="@+id/btn_add_student"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/magenta"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_add"
+        android:backgroundTint="@color/magenta"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_class_list"
-        android:layout_below="@+id/toolbar_course"
+        android:id="@+id/rv_student_list"
+        android:layout_below="@+id/toolbar_student"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/tv_add_class_text"
+        android:id="@+id/tv_add_student_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/instruction_class"
+        android:text="@string/instruction_student"
         android:textSize="18sp"
         android:textColor="@color/bright_yellow_green"
         android:layout_centerInParent="true"
         android:visibility="visible"/>
+
+
 </RelativeLayout>
