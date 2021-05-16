@@ -13,21 +13,21 @@ import java.sql.Date;
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "attendance.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
-    // SUBJECT TABLE (CLASS TABLE)
-    private static final String SUBJECT_TABLE_NAME = "SUBJECT_TABLE";
-    public static final String SUBJECT_ID = "_SUB_ID";
-    public static final String SUBJECT_NAME_KEY = "SUBJECT_NAME";
+    // COURSE TABLE (CLASS TABLE)
+    private static final String COURSE_TABLE_NAME = "COURSE_TABLE";
+    public static final String COURSE_ID = "_SUB_ID";
+    public static final String COURSE_NAME_KEY = "COURSE_NAME";
 
-    private static final String CREATE_SUBJECT_TABLE =
-            "CREATE TABLE " + SUBJECT_TABLE_NAME + "(" +
-                    SUBJECT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                    SUBJECT_NAME_KEY + " TEXT NOT NULL, " +
-                    "UNIQUE (" + SUBJECT_NAME_KEY + ")" + ");";
+    private static final String CREATE_COURSE_TABLE =
+            "CREATE TABLE " + COURSE_TABLE_NAME + "(" +
+                    COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    COURSE_NAME_KEY + " TEXT NOT NULL, " +
+                    "UNIQUE (" + COURSE_NAME_KEY + ")" + ");";
 
-    private static final String DROP_SUBJECT_TABLE = "DROP TABLE IF EXISTS " + SUBJECT_TABLE_NAME;
-    private static final String SELECT_SUBJECT_TABLE = "SELECT * FROM " + SUBJECT_TABLE_NAME;
+    private static final String DROP_COURSE_TABLE = "DROP TABLE IF EXISTS " + COURSE_TABLE_NAME;
+    private static final String SELECT_COURSE_TABLE = "SELECT * FROM " + COURSE_TABLE_NAME;
 
     //  STUDENT TABLE
     private static final String STUDENT_TABLE_NAME = "STUDENT_TABLE";
@@ -37,15 +37,17 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String CREATE_STUDENT_TABLE =
             "CREATE TABLE " + STUDENT_TABLE_NAME + "(" +
                     STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                    SUBJECT_ID + " INTEGER, " +
+                    COURSE_ID + " INTEGER, " +
                     STUDENT_NAME_KEY + " TEXT NOT NULL, " +
-                    "FOREIGN KEY (" + SUBJECT_ID + ") REFERENCES " +
-                    SUBJECT_TABLE_NAME + "(" + SUBJECT_ID + ")" + ");";
+                    "FOREIGN KEY (" + COURSE_ID + ") REFERENCES " +
+                    COURSE_TABLE_NAME + "(" + COURSE_ID + ")" + ");";
 
     private static final String DROP_STUDENT_TABLE = "DROP TABLE IF EXISTS " + STUDENT_TABLE_NAME;
     private static final String SELECT_STUDENT_TABLE = "SELECT * FROM " + STUDENT_TABLE_NAME;
-    private static final String SELECT_CLASS_STUDENT = "SELECT * FROM " + STUDENT_TABLE_NAME +
-            " WHERE " + SUBJECT_ID + "=?";
+    private static final String SELECT_COURSE_STUDENT = "SELECT * FROM " + STUDENT_TABLE_NAME +
+            " WHERE " + COURSE_ID + "=?";
+
+
 
     // ATTENDANCE TABLE
     private static final String ATTENDANCE_TABLE_NAME = "ATTENDANCE";
@@ -63,9 +65,23 @@ public class DbHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (" + STUDENT_ID + ") REFERENCES " +
                     STUDENT_TABLE_NAME + " (" + STUDENT_ID + ")" + ");";
 
-    private static final String DROP_ATTENDANCE_TABLE = "DROP TABLE IF EXISTS " + SUBJECT_TABLE_NAME;
-    private static final String SELECT_ATTENDANCE_TABLE = "SELECT * FROM " + SUBJECT_TABLE_NAME;
+    private static final String DROP_ATTENDANCE_TABLE = "DROP TABLE IF EXISTS " + COURSE_TABLE_NAME;
+    private static final String SELECT_ATTENDANCE_TABLE = "SELECT * FROM " + COURSE_TABLE_NAME;
 
+    // STUDENT COURSES TABLE
+    private static final String STUDENT_COURSES_TABLE_NAME = "STUDENT_COURSES_TABLE";
+    public static final String STUDENT_COURSES_ID = "STUDENT_COURSES_ID";
+
+    private static final String CREATE_STUDENT_COURSES_TABLE =
+            "CREATE TABLE " + STUDENT_COURSES_TABLE_NAME + "(" +
+                    STUDENT_COURSES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                    STUDENT_ID + " INTEGER NOT NULL, " +
+                    COURSE_ID + " INTEGER, " +
+                    ATTENDANCE_ID + " INTEGER, " +
+                    "FOREIGN KEY (" + STUDENT_ID + ") REFERENCES " +
+                    STUDENT_TABLE_NAME + "(" + STUDENT_ID + "), " +
+                    "FOREIGN KEY (" + COURSE_ID + ") REFERENCES " +
+                    COURSE_TABLE_NAME + "(" + COURSE_ID + ")" + ");";
     public DbHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -73,8 +89,9 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_STUDENT_TABLE);
-        db.execSQL(CREATE_SUBJECT_TABLE);
+        db.execSQL(CREATE_COURSE_TABLE);
         db.execSQL(CREATE_ATTENDANCE_TABLE);
+        db.execSQL(CREATE_STUDENT_COURSES_TABLE);
     }
 
     private static void addStudent(SQLiteDatabase db, String studentName) {
@@ -93,7 +110,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private void updateMyDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
        try {
-           db.execSQL(DROP_SUBJECT_TABLE);
+           db.execSQL(DROP_COURSE_TABLE);
            db.execSQL(DROP_STUDENT_TABLE);
            db.execSQL(DROP_ATTENDANCE_TABLE);
        } catch (SQLException e) {
@@ -104,27 +121,27 @@ public class DbHelper extends SQLiteOpenHelper {
     public long addClass(String className) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(SUBJECT_NAME_KEY, className);
+        values.put(COURSE_NAME_KEY, className);
 
-        return database.insert(SUBJECT_TABLE_NAME, null, values);
+        return database.insert(COURSE_TABLE_NAME, null, values);
     }
 
     public Cursor getClassTable() {
        SQLiteDatabase database = this.getReadableDatabase();
-       return database.rawQuery(SELECT_SUBJECT_TABLE, null);
+       return database.rawQuery(SELECT_COURSE_TABLE, null);
     }
 
     public long updateClass(int classId, String className) {
        SQLiteDatabase database = this.getWritableDatabase();
        ContentValues values = new ContentValues();
-       values.put(SUBJECT_NAME_KEY, className);
+       values.put(COURSE_NAME_KEY, className);
 
-       return database.update(SUBJECT_TABLE_NAME, values, SUBJECT_ID + "=?", new String[]{String.valueOf(classId)});
+       return database.update(COURSE_TABLE_NAME, values, COURSE_ID + "=?", new String[]{String.valueOf(classId)});
     }
 
     public long deleteClass(int classId) {
         SQLiteDatabase database = this.getReadableDatabase();
-        return database.delete(SUBJECT_TABLE_NAME, SUBJECT_ID + "=?", new String[]{String.valueOf(classId)});
+        return database.delete(COURSE_TABLE_NAME, COURSE_ID + "=?", new String[]{String.valueOf(classId)});
     }
 
     public long addStudent(String studentName) {

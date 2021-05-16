@@ -19,22 +19,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class ClassActivity extends AppCompatActivity {
+public class CourseActivity extends AppCompatActivity {
     Toolbar toolbar;
     private TextView greeting;
     private TextView date;
     private FloatingActionButton floatingActionButton;
     private RecyclerView classList;
-    private ClassAdapter classAdapter;
+    private CourseAdapter courseAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<ClassItem> classItems = new ArrayList<>();
+    private ArrayList<CourseItem> courseItems = new ArrayList<>();
     private DbHelper dbHelper;
     private MyCalendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_class);
+        setContentView(R.layout.activity_course);
         greeting = findViewById(R.id.tv_add_class_text);
         dbHelper = new DbHelper(this);
         floatingActionButton = findViewById(R.id.btn_add_class);
@@ -45,16 +45,16 @@ public class ClassActivity extends AppCompatActivity {
         classList = findViewById(R.id.rv_class_list);
         layoutManager = new LinearLayoutManager(this);
         classList.setLayoutManager(layoutManager);
-        classAdapter = new ClassAdapter(this, classItems);
-        classList.setAdapter(classAdapter);
-        classAdapter.setOnItemClickListener(position -> gotoItemActivity(position));
+        courseAdapter = new CourseAdapter(this, courseItems);
+        classList.setAdapter(courseAdapter);
+        courseAdapter.setOnItemClickListener(position -> gotoItemActivity(position));
 
         setToolbar();
         date = toolbar.findViewById(R.id.toolbar_date);
     }
 
     private void setToolbar() {
-        toolbar = findViewById(R.id.toolbar_class);
+        toolbar = findViewById(R.id.toolbar_course);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         date = toolbar.findViewById(R.id.toolbar_date);
         ImageButton back = toolbar.findViewById(R.id.btn_back);
@@ -82,13 +82,13 @@ public class ClassActivity extends AppCompatActivity {
 
     private void loadData() {
         Cursor cursor = dbHelper.getClassTable();
-        classItems.clear();
+        courseItems.clear();
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(DbHelper.SUBJECT_ID));
-            String className = cursor.getString(cursor.getColumnIndex(DbHelper.SUBJECT_NAME_KEY));
+            int id = cursor.getInt(cursor.getColumnIndex(DbHelper.COURSE_ID));
+            String courseName = cursor.getString(cursor.getColumnIndex(DbHelper.COURSE_NAME_KEY));
 
-            classItems.add(new ClassItem(id, className));
-            if (!classItems.isEmpty()) {
+            courseItems.add(new CourseItem(id, courseName));
+            if (!courseItems.isEmpty()) {
                 greeting.setVisibility(View.GONE);
             }
         }
@@ -96,22 +96,23 @@ public class ClassActivity extends AppCompatActivity {
 
     private void showAddDialog() {
         MyDialog dialog = new MyDialog();
-        dialog.show(getSupportFragmentManager(), MyDialog.CLASS_ADD_DIALOG);
-        dialog.setListener((className) -> addClass(className));
+        dialog.show(getSupportFragmentManager(), MyDialog.COURSE_ADD_DIALOG);
+        dialog.setListener((className) -> addCourse(courseName));
     }
 
-    private void addClass(String className) {
-        int classId = (int) dbHelper.addClass(className);
-        ClassItem classItem = new ClassItem(classId, className);
-        classItems.add(classItem);
-        classAdapter.notifyDataSetChanged();
+    private void addCourse(String courseName) {
+        int classId = (int) dbHelper.addClass(courseName);
+        CourseItem courseItem = new CourseItem(classId, courseName);
+        courseItems.add(courseItem);
+        courseAdapter.notifyDataSetChanged();
     }
 
 
     private void gotoItemActivity(int position) {
         Intent intent = new Intent(this, StudentActivity.class);
-        intent.putExtra("className", classItems.get(position).getClassName());
+        intent.putExtra("className", courseItems.get(position).getClassName());
         intent.putExtra("position", position);
+        setResult(RESULT_OK, intent);
         startActivity(intent);
     }
 
@@ -122,7 +123,7 @@ public class ClassActivity extends AppCompatActivity {
                 showUpdateDialog(item.getGroupId());
                 break;
             case 1:
-                deleteClass(item.getGroupId());
+                deleteCourse(item.getGroupId());
                 break;
         }
         return super.onContextItemSelected(item);
@@ -130,19 +131,19 @@ public class ClassActivity extends AppCompatActivity {
 
     private void showUpdateDialog(int position) {
         MyDialog dialog = new MyDialog();
-        dialog.show(getSupportFragmentManager(), MyDialog.CLASS_UPDATE_DIALOG);
-        dialog.setListener((className) -> updateClass(position, className));
+        dialog.show(getSupportFragmentManager(), MyDialog.COURSE_UPDATE_DIALOG);
+        dialog.setListener((className) -> updateClass(position, courseName));
     }
 
-    private void updateClass(int position, String className) {
-        dbHelper.updateClass(classItems.get(position).getClassId(), className);
-        classItems.get(position).setClassName(className);
-        classAdapter.notifyItemChanged(position);
+    private void updateCourse(int position, String courseName) {
+        dbHelper.updateClass(courseItems.get(position).getCourseId(), courseName);
+        courseItems.get(position).setCourseName(courseName);
+        courseAdapter.notifyItemChanged(position);
     }
 
-    private void deleteClass(int position) {
-        dbHelper.deleteClass(classItems.get(position).getClassId());
-        classItems.remove(position);
-        classAdapter.notifyItemRemoved(position);
+    private void deleteCourse(int position) {
+        dbHelper.deleteCourse(courseItems.get(position).getCourseId());
+        courseItems.remove(position);
+        courseAdapter.notifyItemRemoved(position);
     }
 }

@@ -5,7 +5,6 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
+public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ClassViewHolder> {
 
-    ArrayList<ClassItem> classItems;
+    ArrayList<CourseItem> courseItems;
     Context context;
     private OnItemClickListener onItemClickListener;
 
@@ -27,17 +26,17 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         this.onItemClickListener = onItemClickListener;
     }
 
-    public ClassAdapter(Context context, ArrayList<ClassItem> classItems) {
-        this.classItems = classItems;
+    public CourseAdapter(Context context, ArrayList<CourseItem> courseItems) {
+        this.courseItems = courseItems;
         this.context = context;
     }
 
     public class ClassViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
-        TextView className;
+        TextView courseName;
 
         public ClassViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-            className = itemView.findViewById(R.id.tv_class_name);
+            courseName = itemView.findViewById(R.id.tv_course_name);
             itemView.setOnClickListener(v -> onItemClickListener.onClick(getAdapterPosition()));
             itemView.setOnCreateContextMenuListener(this);
 
@@ -53,18 +52,18 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     @NonNull
     @Override
     public ClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View classView = LayoutInflater.from(parent.getContext()).inflate(R.layout.class_item, parent, false);
+        View classView = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_item, parent, false);
         return new ClassViewHolder(classView, onItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClassAdapter.ClassViewHolder holder, int position) {
-    holder.className.setText(classItems.get(position).getClassName());
+    public void onBindViewHolder(@NonNull CourseAdapter.ClassViewHolder holder, int position) {
+    holder.courseName.setText(courseItems.get(position).getClassName());
     }
 
     @Override
     public int getItemCount() {
-        return classItems.size();
+        return courseItems.size();
     }
 
 }

@@ -46,7 +46,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tv_class"
+                android:id="@+id/tv_course"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -56,7 +56,7 @@
                 android:text="Class: " />
 
             <Spinner
-                android:id="@+id/sp_classes"
+                android:id="@+id/sp_courses"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"

@@ -20,8 +20,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 
 public class MyDialog extends DialogFragment {
-    public static final String CLASS_ADD_DIALOG = "addClass";
-    public static final String CLASS_UPDATE_DIALOG = "updateClass";
+    public static final String COURSE_ADD_DIALOG = "addClass";
+    public static final String COURSE_UPDATE_DIALOG = "updateClass";
     public static final String STUDENT_ADD_DIALOG = "addStudent";
     public static final String STUDENT_UPDATE_DIALOG = "updateStudent";
     public static final String STATUS_ADD_DIALOG = "addStatus";
@@ -32,7 +32,7 @@ public class MyDialog extends DialogFragment {
     RadioGroup radioGroup;
     OnClickListener listener;
     TextView title;
-    TextView classTxt;
+    TextView courseTxt;
     Button add, cancel;
     Spinner spinner;
 
@@ -48,10 +48,10 @@ public class MyDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog = null;
-        if (getTag().equals(CLASS_ADD_DIALOG)) {
+        if (getTag().equals(COURSE_ADD_DIALOG)) {
             dialog = getAddClassDialog();
         }
-        if (getTag().equals(CLASS_UPDATE_DIALOG)) {
+        if (getTag().equals(COURSE_UPDATE_DIALOG)) {
             dialog = getUpdateClassDialog();
         }
         if (getTag().equals(STUDENT_ADD_DIALOG)) {
@@ -84,7 +84,7 @@ public class MyDialog extends DialogFragment {
         add = view.findViewById(R.id.btn_add);
         cancel = view.findViewById(R.id.btn_cancel);
 
-        Spinner spinner = view.findViewById(R.id.sp_classes);
+        Spinner spinner = view.findViewById(R.id.sp_courses);
         RadioGroup radioGroup = view.findViewById(R.id.radiogroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -119,7 +119,7 @@ public class MyDialog extends DialogFragment {
         add = view.findViewById(R.id.btn_add);
         cancel = view.findViewById(R.id.btn_cancel);
 
-        Spinner spinner = view.findViewById(R.id.sp_classes);
+        Spinner spinner = view.findViewById(R.id.sp_courses);
         RadioGroup radioGroup = view.findViewById(R.id.radiogroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -145,7 +145,7 @@ public class MyDialog extends DialogFragment {
         builder.setView(view);
 
         title = view.findViewById(R.id.titleDialog);
-        title.setText(R.string.update_class);
+        title.setText(R.string.update_student);
         EditText edt_class = view.findViewById(R.id.edt01);
         edt_class.setHint("Class Name");
         EditText edt_02 = view.findViewById(R.id.edt02);
@@ -153,7 +153,7 @@ public class MyDialog extends DialogFragment {
         edt_02.setVisibility(View.GONE);
 
 
-        Spinner spinner = view.findViewById(R.id.sp_classes);
+        Spinner spinner = view.findViewById(R.id.sp_courses);
 //        CursorAdapter<>
 //        spinner.setOnItemSelectedListener(this);
 
@@ -175,8 +175,8 @@ public class MyDialog extends DialogFragment {
         cancel.setOnClickListener(v -> dismiss());
         add.setText(R.string.update);
         add.setOnClickListener(v -> {
-            String className = edt_class.getText().toString();
-            listener.onClick(className);
+            String courseName = edt_course.getText().toString();
+            listener.onClick(courseName);
             dismiss();
         });
 
@@ -227,9 +227,9 @@ public class MyDialog extends DialogFragment {
         edt_02.setVisibility(View.GONE);
         radioGroup = view.findViewById(R.id.radiogroup);
         radioGroup.setVisibility(view.GONE);
-        classTxt = view.findViewById(R.id.tv_class);
-        classTxt.setVisibility(view.GONE);
-        spinner = view.findViewById(R.id.sp_classes);
+        courseTxt = view.findViewById(R.id.tv_course);
+        courseTxt.setVisibility(view.GONE);
+        spinner = view.findViewById(R.id.sp_courses);
         spinner.setVisibility(view.GONE);
         add = view.findViewById(R.id.btn_add);
         add.setText("Update");
@@ -260,9 +260,9 @@ public class MyDialog extends DialogFragment {
         edt_02.setVisibility(View.GONE);
         radioGroup = view.findViewById(R.id.radiogroup);
         radioGroup.setVisibility(view.GONE);
-        classTxt = view.findViewById(R.id.tv_class);
-        classTxt.setVisibility(view.GONE);
-        spinner = view.findViewById(R.id.sp_classes);
+        courseTxt = view.findViewById(R.id.tv_course);
+        courseTxt.setVisibility(view.GONE);
+        spinner = view.findViewById(R.id.sp_courses);
         spinner.setVisibility(view.GONE);
         add = view.findViewById(R.id.btn_add);
         cancel = view.findViewById(R.id.btn_cancel);

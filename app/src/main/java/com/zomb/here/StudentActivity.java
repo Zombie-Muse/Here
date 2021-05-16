@@ -3,14 +3,13 @@ package com.zomb.here;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.security.ConfirmationAlreadyPresentingException;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class StudentActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -31,13 +29,20 @@ public class StudentActivity extends AppCompatActivity {
     private StudentAdapter studentAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<StudentItem> studentItems = new ArrayList<>();
-    private ArrayList<ClassItem> classItems = new ArrayList<>();
+    private ArrayList<CourseItem> courseItems = new ArrayList<>();
     private DbHelper dbHelper;
     private MyCalendar calendar;
+    private String courseName;
+    private int mCourseStudent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
+
+        // intended to load class name from the classActivity
+        Intent intent = getIntent();
+
+
         greeting = findViewById(R.id.tv_add_student_text);
         dbHelper = new DbHelper(this);
         floatingActionButton = findViewById(R.id.btn_add_student);
@@ -55,12 +60,23 @@ public class StudentActivity extends AppCompatActivity {
         date = toolbar.findViewById(R.id.toolbar_date);
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COURSE) {
+            int courseId = data.getIntExtra(CourseActivity.courseName, "Course");
+            mCourseStudent = dbHelper.getClass().toString();
+        }
+    }
+
     private void setToolbar() {
         toolbar = findViewById(R.id.toolbar_student);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         date = toolbar.findViewById(R.id.toolbar_date);
         ImageButton back = toolbar.findViewById(R.id.btn_back);
         ImageButton calendarBtn = toolbar.findViewById(R.id.btn_calendar);
+        if (mCourseStudent != null) { //checks for a class name
+            title.setText(courseName);
+        }
 
         title.setText(R.string.your_students);
         date.setText(calendar.getDate());
@@ -108,7 +124,7 @@ public class StudentActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AttendanceActivity.class);
         intent.putExtra("studentName", studentItems.get(position).getStudentName());
         intent.putExtra("position", position);
-//        intent.putExtra("className", classItems.get(position).getclassName());
+//        intent.putExtra("className", courseItems.get(position).getclassName());
 //        intent.putExtra("classPosition", position);
         startActivity(intent);
     }
