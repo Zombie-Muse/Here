@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-
+//------------------------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------- CLASS NOT USED  ---------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------------------
 public class AttendanceActivity extends AppCompatActivity {
     Toolbar toolbar;
     private TextView greeting;

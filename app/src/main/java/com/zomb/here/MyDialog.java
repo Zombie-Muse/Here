@@ -67,39 +67,39 @@ public class MyDialog extends DialogFragment {
         if (getTag().equals(STATUS_UPDATE_DIALOG)) {
             dialog = getUpdateStatusDialog();
         }
-        if (getTag().equals(COURSE_STUDENT_DIALOG)) {
-            dialog = getAddCourseStudentDialog();
-        }
+//        if (getTag().equals(COURSE_STUDENT_DIALOG)) {
+//            dialog = getAddCourseStudentDialog();
+//        }
 
         return dialog;
     }
 
-    private Dialog getAddCourseStudentDialog() {
-       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-       View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
-       builder.setView(view);
-
-       title = view.findViewById(R.id.titleDialog);
-       title.setText(studentName);
-       EditText edt_student = view.findViewById(R.id.edt01);
-       edt_student.setHint(studentName);
-       EditText edt_course = view.findViewById(R.id.edt02);
-       edt_course.setHint(courseName);
-       add = view.findViewById(R.id.btn_add);
-       cancel = view.findViewById(R.id.btn_cancel);
-
-       Spinner spinner = view.findViewById(R.id.sp_courses);
-
-       cancel.setOnClickListener(v -> dismiss());
-       add.setText(R.string.update);
-       add.setOnClickListener(v -> {
-           String studentName = edt_student.getText().toString();
-           String courseName = edt_course.getText().toString();
-           listener.onClick(studentName);
-           dismiss();
-       });
-       return builder.create();
-    }
+//    private Dialog getAddCourseStudentDialog() {
+//       AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//       View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
+//       builder.setView(view);
+//
+//       title = view.findViewById(R.id.titleDialog);
+//       title.setText(studentName);
+//       EditText edt_student = view.findViewById(R.id.edt01);
+//       edt_student.setHint(studentName);
+//       EditText edt_course = view.findViewById(R.id.edt02);
+//       edt_course.setHint(courseName);
+//       add = view.findViewById(R.id.btn_add);
+//       cancel = view.findViewById(R.id.btn_cancel);
+//
+//       Spinner spinner = view.findViewById(R.id.sp_courses);
+//
+//       cancel.setOnClickListener(v -> dismiss());
+//       add.setText(R.string.update);
+//       add.setOnClickListener(v -> {
+//           String studentName = edt_student.getText().toString();
+//           String courseName = edt_course.getText().toString();
+//           listener.onClick(studentName);
+//           dismiss();
+//       });
+//       return builder.create();
+//    }
 
     //todo: add updateStatus dialog
     private Dialog getUpdateStatusDialog() {
@@ -184,7 +184,7 @@ public class MyDialog extends DialogFragment {
         title = view.findViewById(R.id.titleDialog);
         title.setText(R.string.update_student);
         EditText edt_course = view.findViewById(R.id.edt01);
-        edt_course.setHint("Class Name");
+        edt_course.setHint("Student Name");
         EditText edt_02 = view.findViewById(R.id.edt02);
         edt_02.setText("");
         edt_02.setVisibility(View.GONE);

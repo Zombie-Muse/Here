@@ -120,10 +120,10 @@ public class StudentActivity extends AppCompatActivity {
         dialog.setListener((studentStatus) -> addAttendance(studentStatus));
     }
 
-    private void showStudentCourseDialog() {
-        MyDialog dialog = new MyDialog();
-        dialog.show(getSupportFragmentManager(), MyDialog.)
-    }
+//    private void showStudentCourseDialog() {
+//        MyDialog dialog = new MyDialog();
+//        dialog.show(getSupportFragmentManager(), MyDialog.)
+//    }
 
     private void addAttendance(String studentStatus) {
     }
@@ -159,7 +159,7 @@ public class StudentActivity extends AppCompatActivity {
 
     private void addStudent(String studentName) {
         int studentId = (int) dbHelper.addStudent(studentName);
-        int courseId = (int) dbHelper.addStudent(courseName);
+//        int courseId = (int) dbHelper.addStudent(courseName);
         StudentItem studentItem = new StudentItem(studentId, studentName);
         studentItems.add(studentItem);
         studentAdapter.notifyDataSetChanged();
